@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>borys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>hi, i'm borys</h1>
+    <p class="subtitle">// welcome to my corner of the internet</p>
+  </header>
+
+  <div class="terminal" id="terminal">
+    <div class="terminal-bar">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+      <div class="terminal-title">borys@portfolio: ~</div>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <div class="line">last login: today from localhost</div>
+      <div class="line">type something below (it doesn't do anything yet)</div>
+      <div class="line">&nbsp;</div>
+      <div class="prompt-line">
+        <span class="prompt">borys@portfolio:~$</span>
+        <span class="input-wrap"><span class="typed" id="typed"></span><span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <details class="how-to">
+    <summary>how to use</summary>
+    <div class="how-to-content"></div>
+  </details>
+
+  <script src="script.js"></script>
+</body>
+</html>

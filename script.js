@@ -3,6 +3,9 @@ const typedEl = document.getElementById('typed');
 const terminalBody = document.getElementById('terminal-body');
 let buffer = '';
 
+const folders = ['aboutme', 'contactme', 'main', 'projects'];
+let currentFolder = 'main';
+
 function focusTerminal() {
   window.focus();
 }
@@ -23,6 +26,13 @@ function submitCommand() {
     const output = document.createElement('div');
     output.className = 'line';
     output.textContent = '/home';
+    terminalBody.insertBefore(output, promptLine);
+  } else if (cmd === 'ls') {
+    const output = document.createElement('div');
+    output.className = 'line';
+    output.innerHTML = folders
+      .map(f => (f === currentFolder ? `<span class="ls-current">${f}</span>` : f))
+      .join('  ');
     terminalBody.insertBefore(output, promptLine);
   }
 
@@ -72,7 +82,7 @@ buildFallingHeading();
 /* folder collapse / expand */
 const collapseBtn = document.getElementById('collapse-btn');
 const pageContent = document.getElementById('page-content');
-const collapsedFolder = document.getElementById('collapsed-folder');
+const folderMenu = document.getElementById('folder-menu');
 const explorerBar = document.getElementById('explorer-bar');
 
 function closeFolder() {
@@ -81,13 +91,13 @@ function closeFolder() {
     pageContent.classList.remove('closing');
     pageContent.classList.add('hidden');
     explorerBar.style.display = 'none';
-    collapsedFolder.classList.add('visible');
+    folderMenu.classList.add('visible');
     pageContent.removeEventListener('animationend', handler);
   });
 }
 
 function openFolder() {
-  collapsedFolder.classList.remove('visible');
+  folderMenu.classList.remove('visible');
   explorerBar.style.display = 'flex';
   pageContent.classList.remove('hidden');
   pageContent.classList.add('opening');
@@ -98,4 +108,11 @@ function openFolder() {
 }
 
 collapseBtn.addEventListener('click', closeFolder);
-collapsedFolder.addEventListener('click', openFolder);
+
+folderMenu.addEventListener('click', (e) => {
+  const item = e.target.closest('.folder-item');
+  if (!item) return;
+  if (item.dataset.folder === 'main') {
+    openFolder();
+  }
+});

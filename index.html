@@ -19,10 +19,24 @@
     <button class="collapse-btn" id="collapse-btn" aria-label="collapse folder">▾</button>
   </div>
 
-  <button class="collapsed-folder" id="collapsed-folder" aria-label="open folder">
-    <span class="icon icon-lg">📁</span>
-    <span>main</span>
-  </button>
+  <div class="folder-menu" id="folder-menu">
+    <button class="folder-item" data-folder="main" aria-label="open main folder">
+      <span class="icon icon-lg">📁</span>
+      <span>main</span>
+    </button>
+    <button class="folder-item" data-folder="aboutme" title="coming soon">
+      <span class="icon icon-lg">📁</span>
+      <span>aboutme</span>
+    </button>
+    <button class="folder-item" data-folder="projects" title="coming soon">
+      <span class="icon icon-lg">📁</span>
+      <span>projects</span>
+    </button>
+    <button class="folder-item" data-folder="contactme" title="coming soon">
+      <span class="icon icon-lg">📁</span>
+      <span>contactme</span>
+    </button>
+  </div>
 
   <div class="page-content" id="page-content">
 
@@ -55,6 +69,7 @@
         <legend><span class="icon">📄</span> help.txt</legend>
         <p class="help-text">available commands:</p>
         <p class="help-text">pwd — shows your current directory</p>
+        <p class="help-text">ls — lists all folders, current one highlighted</p>
       </fieldset>
     </details>
 

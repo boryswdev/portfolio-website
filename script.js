@@ -1,23 +1,101 @@
+/* terminal typing */
 const typedEl = document.getElementById('typed');
-const body = document.getElementById('terminal-body');
+const terminalBody = document.getElementById('terminal-body');
 let buffer = '';
 
 function focusTerminal() {
   window.focus();
 }
 
-body.addEventListener('click', focusTerminal);
+terminalBody.addEventListener('click', focusTerminal);
 focusTerminal();
+
+function submitCommand() {
+  const promptLine = document.querySelector('.prompt-line');
+  const cmd = buffer.trim();
+
+  const finishedLine = document.createElement('div');
+  finishedLine.className = 'line';
+  finishedLine.textContent = `borys@portfolio:~$ ${buffer}`;
+  terminalBody.insertBefore(finishedLine, promptLine);
+
+  if (cmd === 'pwd') {
+    const output = document.createElement('div');
+    output.className = 'line';
+    output.textContent = '/home';
+    terminalBody.insertBefore(output, promptLine);
+  }
+
+  buffer = '';
+  typedEl.textContent = '';
+  terminalBody.scrollTop = terminalBody.scrollHeight;
+}
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Backspace') {
     buffer = buffer.slice(0, -1);
     e.preventDefault();
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    submitCommand();
+    return;
   } else if (e.key.length === 1) {
     buffer += e.key;
   } else {
     return;
   }
   typedEl.textContent = buffer;
-  body.scrollTop = body.scrollHeight;
+  terminalBody.scrollTop = terminalBody.scrollHeight;
 });
+
+/* heading letters fall into place on load */
+function buildFallingHeading() {
+  const heading = document.getElementById('heading');
+  const plain = "hi, i'm ";
+  const name = "borys";
+  heading.innerHTML = '';
+
+  const makeLetter = (ch, index, highlighted) => {
+    const span = document.createElement('span');
+    span.className = highlighted ? 'letter highlight' : 'letter';
+    span.style.animationDelay = `${index * 0.045}s`;
+    span.textContent = ch === ' ' ? '\u00A0' : ch;
+    return span;
+  };
+
+  [...plain].forEach((ch, i) => heading.appendChild(makeLetter(ch, i, false)));
+  [...name].forEach((ch, i) => heading.appendChild(makeLetter(ch, plain.length + i, true)));
+}
+
+buildFallingHeading();
+
+/* folder collapse / expand */
+const collapseBtn = document.getElementById('collapse-btn');
+const pageContent = document.getElementById('page-content');
+const collapsedFolder = document.getElementById('collapsed-folder');
+const explorerBar = document.getElementById('explorer-bar');
+
+function closeFolder() {
+  pageContent.classList.add('closing');
+  pageContent.addEventListener('animationend', function handler() {
+    pageContent.classList.remove('closing');
+    pageContent.classList.add('hidden');
+    explorerBar.style.display = 'none';
+    collapsedFolder.classList.add('visible');
+    pageContent.removeEventListener('animationend', handler);
+  });
+}
+
+function openFolder() {
+  collapsedFolder.classList.remove('visible');
+  explorerBar.style.display = 'flex';
+  pageContent.classList.remove('hidden');
+  pageContent.classList.add('opening');
+  pageContent.addEventListener('animationend', function handler() {
+    pageContent.classList.remove('opening');
+    pageContent.removeEventListener('animationend', handler);
+  });
+}
+
+collapseBtn.addEventListener('click', closeFolder);
+collapsedFolder.addEventListener('click', openFolder);

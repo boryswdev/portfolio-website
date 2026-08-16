@@ -6,6 +6,9 @@
   --term-text: #d9f5d9;
   --term-dim: #7a7a7a;
   --accent: #4a4a4a;
+  --blue: #3b78e0;
+  --border-grey: #8a8a85;
+  --tab-bg: #c7c7c1;
 }
 
 * {
@@ -24,15 +27,17 @@ body {
   background-size: 24px 24px;
   color: var(--ink);
   font-family: 'Space Grotesk', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
-  padding: 32px 16px;
+  padding-bottom: 40px;
 }
 
-/* selection highlight, tuned per background so it never clashes */
+/* text scales fluidly with viewport across the whole page */
+h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
+.subtitle { font-size: clamp(0.75rem, 1.6vw, 0.9rem); }
+.terminal-body { font-size: clamp(0.8rem, 1.6vw, 0.9rem); }
+.help-text { font-size: clamp(0.8rem, 1.6vw, 0.9rem); }
+.explorer-label, .how-to summary, .editor-tab, legend { font-size: clamp(0.75rem, 1.4vw, 0.9rem); }
+
 body ::selection {
   background: rgba(28, 28, 28, 0.15);
   color: var(--ink);
@@ -43,28 +48,218 @@ body ::selection {
   color: #eafff0;
 }
 
-header {
+.icon {
+  font-size: 1em;
+}
+
+/* top explorer bar */
+.explorer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--tab-bg);
+  border-bottom: 1px solid var(--border-grey);
+  padding: 10px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: lowercase;
+}
+
+.explorer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.explorer-label {
+  letter-spacing: 0.02em;
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--ink);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.collapse-btn:hover {
+  background: rgba(0,0,0,0.08);
+}
+
+.collapse-btn.collapsed {
+  transform: rotate(-90deg);
+}
+
+/* centered folder shown after collapsing */
+.collapsed-folder {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  padding: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink);
+  text-transform: lowercase;
+}
+
+.collapsed-folder.visible {
+  display: flex;
+}
+
+.icon-lg {
+  font-size: 3rem;
+}
+
+/* main content column */
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 16px 0;
+}
+
+.page-content.hidden {
+  display: none;
+}
+
+@keyframes fold-away {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  70% {
+    opacity: 0.7;
+    transform: scale(0.3) translateY(10px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.03) translateY(20px);
+  }
+}
+
+.page-content.closing {
+  transform-origin: 50% 15%;
+  animation: fold-away 0.45s cubic-bezier(.6, 0, .85, 0) forwards;
+}
+
+@keyframes fold-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.03) translateY(20px);
+  }
+  30% {
+    opacity: 0.7;
+    transform: scale(0.3) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.page-content.opening {
+  transform-origin: 50% 15%;
+  animation: fold-in 0.45s cubic-bezier(.15, 1, .4, 1) forwards;
+}
+
+@keyframes folder-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.03);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(0.5);
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.collapsed-folder.visible {
+  transform-origin: 50% 15%;
+  animation: folder-pop 0.5s cubic-bezier(.2, 1, .4, 1) forwards;
+}
+
+/* grey-bordered file boxes (readme.txt / help.txt) */
+.file-box {
+  width: min(680px, 92vw);
+  border: 1px solid var(--border-grey);
+  border-radius: 8px;
+  padding: 24px 24px 20px;
+  margin: 0 0 24px;
+  background: rgba(255,255,255,0.15);
+}
+
+.file-box legend {
+  padding: 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  text-transform: lowercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.file-box header {
   text-align: center;
-  margin-bottom: 40px;
 }
 
 h1 {
   margin: 0;
   font-weight: 700;
-  font-size: clamp(2rem, 6vw, 3.4rem);
   letter-spacing: -0.02em;
   text-transform: lowercase;
+}
+
+.highlight {
+  color: var(--blue);
+}
+
+/* letters drop into place on page load */
+.letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-70px) rotate(-8deg);
+  animation: letter-fall 0.6s cubic-bezier(.22, .68, .35, 1.35) forwards;
+}
+
+@keyframes letter-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-70px) rotate(-8deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(8px) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
 }
 
 p.subtitle {
   margin: 10px 0 0;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9rem;
   color: var(--accent);
   text-transform: lowercase;
   letter-spacing: 0.02em;
+  line-height: 1.6;
 }
 
+/* editor-style tab sitting above the terminal */
 .terminal {
   width: min(680px, 92vw);
   background: var(--term-bg);
@@ -74,6 +269,7 @@ p.subtitle {
     0 2px 0 rgba(255,255,255,0.03) inset;
   overflow: hidden;
   font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 24px;
 }
 
 .terminal-bar {
@@ -82,7 +278,6 @@ p.subtitle {
   gap: 8px;
   padding: 10px 14px;
   background: var(--term-header);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .dot {
@@ -105,10 +300,9 @@ p.subtitle {
 
 .terminal-body {
   padding: 18px 16px 22px;
-  min-height: 240px;
+  min-height: 220px;
   max-height: 50vh;
   overflow-y: auto;
-  font-size: 0.9rem;
   line-height: 1.6;
   color: var(--term-text);
   cursor: text;
@@ -131,8 +325,6 @@ p.subtitle {
   flex-shrink: 0;
 }
 
-/* wraps typed text + cursor as one flowing unit so the cursor
-   never gets stranded on its own line */
 .input-wrap {
   display: inline;
   word-break: break-word;
@@ -157,12 +349,10 @@ p.subtitle {
   50% { opacity: 0; }
 }
 
-/* dropdown */
+/* help dropdown */
 .how-to {
-  margin-top: 28px;
   width: min(680px, 92vw);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
   color: var(--ink);
 }
 
@@ -186,14 +376,19 @@ p.subtitle {
   content: "▸";
   font-size: 0.7rem;
   transition: transform 0.15s ease;
+  order: -1;
 }
 
 .how-to[open] summary::before {
   transform: rotate(90deg);
 }
 
-.how-to-content {
-  padding: 8px 2px 4px;
+.how-to .file-box {
+  margin-top: 10px;
+}
+
+.help-text {
+  margin: 0;
   color: var(--accent);
-  min-height: 20px;
+  text-transform: lowercase;
 }

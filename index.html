@@ -11,33 +11,54 @@
 </head>
 <body>
 
-  <header>
-    <h1>hi, i'm borys</h1>
-    <p class="subtitle">// welcome to my corner of the internet</p>
-  </header>
-
-  <div class="terminal" id="terminal">
-    <div class="terminal-bar">
-      <div class="dot red"></div>
-      <div class="dot yellow"></div>
-      <div class="dot green"></div>
-      <div class="terminal-title">borys@portfolio: ~</div>
-    </div>
-    <div class="terminal-body" id="terminal-body">
-      <div class="line">last login: today from localhost</div>
-      <div class="line">type something below (it doesn't do anything yet)</div>
-      <div class="line">&nbsp;</div>
-      <div class="prompt-line">
-        <span class="prompt">borys@portfolio:~$</span>
-        <span class="input-wrap"><span class="typed" id="typed"></span><span class="cursor"></span></span>
-      </div>
-    </div>
+  <div class="explorer-bar" id="explorer-bar">
+    <span class="explorer-left">
+      <span class="icon">📁</span>
+      <span class="explorer-label">main</span>
+    </span>
+    <button class="collapse-btn" id="collapse-btn" aria-label="collapse folder">▾</button>
   </div>
 
-  <details class="how-to">
-    <summary>how to use</summary>
-    <div class="how-to-content"></div>
-  </details>
+  <button class="collapsed-folder" id="collapsed-folder" aria-label="open folder">
+    <span class="icon icon-lg">📁</span>
+    <span>main</span>
+  </button>
+
+  <div class="page-content" id="page-content">
+
+    <fieldset class="file-box">
+      <legend><span class="icon">📄</span> readme.txt</legend>
+      <header>
+        <h1 id="heading"><noscript>hi, i'm <span class="highlight">borys</span></noscript></h1>
+        <p class="subtitle">// welcome to my portfolio website<br>// use the integrated terminal to interact with my website</p>
+      </header>
+    </fieldset>
+
+    <div class="terminal" id="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="terminal-title">bash</div>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div class="prompt-line">
+          <span class="prompt">borys@portfolio:~$</span>
+          <span class="input-wrap"><span class="typed" id="typed"></span><span class="cursor"></span></span>
+        </div>
+      </div>
+    </div>
+
+    <details class="how-to">
+      <summary><span class="icon">📁</span> help</summary>
+      <fieldset class="file-box">
+        <legend><span class="icon">📄</span> help.txt</legend>
+        <p class="help-text">available commands:</p>
+        <p class="help-text">pwd — shows your current directory</p>
+      </fieldset>
+    </details>
+
+  </div>
 
   <script src="script.js"></script>
 </body>

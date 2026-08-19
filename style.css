@@ -7,6 +7,7 @@
   --term-dim: #7a7a7a;
   --accent: #4a4a4a;
   --blue: #3b78e0;
+  --term-blue: #5ea8ff;
   --border-grey: #8a8a85;
   --tab-bg: #c7c7c1;
 }
@@ -26,7 +27,7 @@ body {
     radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
   background-size: 24px 24px;
   color: var(--ink);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Iconoplastic', sans-serif;
   min-height: 100vh;
   padding-bottom: 40px;
 }
@@ -36,7 +37,7 @@ h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
 .subtitle { font-size: clamp(0.75rem, 1.6vw, 0.9rem); }
 .terminal-body { font-size: clamp(0.8rem, 1.6vw, 0.9rem); }
 .help-text { font-size: clamp(0.8rem, 1.6vw, 0.9rem); }
-.explorer-label, .how-to summary, .editor-tab, legend { font-size: clamp(0.75rem, 1.4vw, 0.9rem); }
+.explorer-label, .how-to summary, legend { font-size: clamp(0.75rem, 1.4vw, 0.9rem); }
 
 body ::selection {
   background: rgba(28, 28, 28, 0.15);
@@ -60,7 +61,7 @@ body ::selection {
   background: var(--tab-bg);
   border-bottom: 1px solid var(--border-grey);
   padding: 10px 20px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Iconoplastic', sans-serif;
   text-transform: lowercase;
 }
 
@@ -116,7 +117,7 @@ body ::selection {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Iconoplastic', sans-serif;
   color: var(--ink);
   text-transform: lowercase;
   padding: 8px;
@@ -224,7 +225,7 @@ body ::selection {
 
 .file-box legend {
   padding: 0 8px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Iconoplastic', sans-serif;
   color: var(--accent);
   text-transform: lowercase;
   display: flex;
@@ -272,7 +273,7 @@ h1 {
 
 p.subtitle {
   margin: 10px 0 0;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Iconoplastic', sans-serif;
   color: var(--accent);
   text-transform: lowercase;
   letter-spacing: 0.02em;
@@ -344,10 +345,18 @@ p.subtitle {
   align-items: baseline;
 }
 
-.prompt {
-  color: #6bd88a;
+.prompt-prefix {
+  color: var(--term-text);
   margin-right: 8px;
   flex-shrink: 0;
+}
+
+.host {
+  color: #6bd88a;
+}
+
+.path {
+  color: var(--term-blue);
 }
 
 .input-wrap {
@@ -377,7 +386,7 @@ p.subtitle {
 /* help dropdown */
 .how-to {
   width: min(680px, 92vw);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Iconoplastic', sans-serif;
   color: var(--ink);
 }
 

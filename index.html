@@ -6,7 +6,8 @@
 <title>borys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/iconoplastic" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -43,7 +44,7 @@
     <fieldset class="file-box">
       <legend><span class="icon">📄</span> readme.txt</legend>
       <header>
-        <h1 id="heading"><noscript>hi, i'm <span class="highlight">borys</span></noscript></h1>
+        <h1 id="heading">hi, i'm <span class="highlight">borys</span></h1>
         <p class="subtitle">// welcome to my portfolio website<br>// use the integrated terminal to interact with my website</p>
       </header>
     </fieldset>
@@ -57,7 +58,9 @@
       </div>
       <div class="terminal-body" id="terminal-body">
         <div class="prompt-line">
-          <span class="prompt">borys@portfolio:~$</span>
+          <span class="prompt-prefix">
+            <span class="host">borys@portfolio</span>:<span class="path" id="current-path">main</span>$
+          </span>
           <span class="input-wrap"><span class="typed" id="typed"></span><span class="cursor"></span></span>
         </div>
       </div>

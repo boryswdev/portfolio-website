@@ -13,10 +13,7 @@
 <body>
 
   <div class="explorer-bar" id="explorer-bar">
-    <span class="explorer-left">
-      <span class="icon">📁</span>
-      <span class="explorer-label">main</span>
-    </span>
+    <div class="tabs" id="tabs-container"></div>
     <button class="collapse-btn" id="collapse-btn" aria-label="collapse folder">▾</button>
   </div>
 
@@ -25,15 +22,15 @@
       <span class="icon icon-lg">📁</span>
       <span>main</span>
     </button>
-    <button class="folder-item" data-folder="aboutme" title="coming soon">
+    <button class="folder-item" data-folder="aboutme">
       <span class="icon icon-lg">📁</span>
       <span>aboutme</span>
     </button>
-    <button class="folder-item" data-folder="projects" title="coming soon">
+    <button class="folder-item" data-folder="projects">
       <span class="icon icon-lg">📁</span>
       <span>projects</span>
     </button>
-    <button class="folder-item" data-folder="contactme" title="coming soon">
+    <button class="folder-item" data-folder="contactme">
       <span class="icon icon-lg">📁</span>
       <span>contactme</span>
     </button>
@@ -41,40 +38,76 @@
 
   <div class="page-content" id="page-content">
 
-    <fieldset class="file-box">
-      <legend><span class="icon">📄</span> readme.txt</legend>
-      <header>
-        <h1 id="heading">hi, i'm <span class="highlight">borys</span></h1>
-        <p class="subtitle">// welcome to my portfolio website<br>// use the integrated terminal to interact with my website</p>
-      </header>
-    </fieldset>
+    <!-- ============ main tab content ============ -->
+    <div class="view active" data-view="main">
+      <fieldset class="file-box">
+        <legend><span class="icon">📄</span> readme.txt</legend>
+        <header>
+          <h1 id="heading">hi, i'm <span class="highlight">borys</span></h1>
+          <p class="subtitle">// welcome to my portfolio website<br>// use the integrated terminal to interact with my website</p>
+        </header>
+      </fieldset>
 
-    <div class="terminal" id="terminal">
-      <div class="terminal-bar">
-        <div class="dot red"></div>
-        <div class="dot yellow"></div>
-        <div class="dot green"></div>
-        <div class="terminal-title">bash</div>
-      </div>
-      <div class="terminal-body" id="terminal-body">
-        <div class="prompt-line">
-          <span class="prompt-prefix">
-            <span class="host">borys@portfolio</span>:<span class="path" id="current-path">main</span>$
-          </span>
-          <span class="input-wrap"><span class="typed" id="typed"></span><span class="cursor"></span></span>
+      <div class="terminal" id="terminal">
+        <div class="terminal-bar">
+          <div class="dot red"></div>
+          <div class="dot yellow"></div>
+          <div class="dot green"></div>
+          <div class="terminal-title">bash</div>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="prompt-line">
+            <span class="prompt-prefix">
+              <span class="host">borys@portfolio</span>:<span class="path" id="current-path">~/main</span>$
+            </span>
+            <span class="input-wrap"><span class="typed" id="typed"></span><span class="cursor"></span></span>
+          </div>
         </div>
       </div>
+
+      <details class="how-to">
+        <summary><span class="icon">📁</span> help</summary>
+        <fieldset class="file-box">
+          <legend><span class="icon">📄</span> help.txt</legend>
+          <p class="help-text">available commands:</p>
+          <p class="help-text">pwd — shows your current directory</p>
+          <p class="help-text">ls — lists all folders, current one highlighted</p>
+          <p class="help-text">cd &lt;folder&gt; — opens that folder in a new tab up top</p>
+          <p class="help-text">clear — clears the terminal</p>
+          <p class="help-text">↑ / ↓ — cycle through your command history</p>
+        </fieldset>
+      </details>
     </div>
 
-    <details class="how-to">
-      <summary><span class="icon">📁</span> help</summary>
+    <!-- ============ aboutme tab content — EDIT HERE ============ -->
+    <div class="view" data-view="aboutme">
       <fieldset class="file-box">
-        <legend><span class="icon">📄</span> help.txt</legend>
-        <p class="help-text">available commands:</p>
-        <p class="help-text">pwd — shows your current directory</p>
-        <p class="help-text">ls — lists all folders, current one highlighted</p>
+        <legend><span class="icon">📄</span> aboutme.txt</legend>
+        <header>
+          <h1>about me</h1>
+        </header>
       </fieldset>
-    </details>
+    </div>
+
+    <!-- ============ projects tab content — EDIT HERE ============ -->
+    <div class="view" data-view="projects">
+      <fieldset class="file-box">
+        <legend><span class="icon">📄</span> projects.txt</legend>
+        <header>
+          <h1>projects</h1>
+        </header>
+      </fieldset>
+    </div>
+
+    <!-- ============ contactme tab content — EDIT HERE ============ -->
+    <div class="view" data-view="contactme">
+      <fieldset class="file-box">
+        <legend><span class="icon">📄</span> contactme.txt</legend>
+        <header>
+          <h1>contact me</h1>
+        </header>
+      </fieldset>
+    </div>
 
   </div>
 

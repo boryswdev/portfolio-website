@@ -60,19 +60,66 @@ body ::selection {
   justify-content: space-between;
   background: var(--tab-bg);
   border-bottom: 1px solid var(--border-grey);
-  padding: 14px 26px;
+  padding: 10px 26px;
   font-family: 'Iconoplastic', sans-serif;
   text-transform: lowercase;
 }
 
-.explorer-left {
+/* tab strip that lives inside the explorer bar */
+.tabs {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
-.explorer-label {
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: 'Iconoplastic', sans-serif;
+  color: var(--accent);
+  cursor: pointer;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.tab:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.tab.active {
+  background: rgba(255,255,255,0.55);
+  border-color: var(--border-grey);
+  color: var(--ink);
+}
+
+.tab-label {
+  letter-spacing: 0.02em;
+}
+
+.tab-close {
+  margin-left: 2px;
+  opacity: 0.5;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+.tab-close:hover {
+  opacity: 1;
+  background: rgba(0,0,0,0.15);
 }
 
 .collapse-btn {
@@ -84,6 +131,7 @@ body ::selection {
   padding: 6px 10px;
   border-radius: 4px;
   transition: background 0.15s ease, transform 0.15s ease;
+  flex-shrink: 0;
 }
 
 .collapse-btn:hover {
@@ -125,13 +173,8 @@ body ::selection {
   transition: background 0.15s ease;
 }
 
-.folder-item[data-folder="main"]:hover {
+.folder-item:hover {
   background: rgba(0,0,0,0.06);
-}
-
-.folder-item:not([data-folder="main"]) {
-  opacity: 0.55;
-  cursor: default;
 }
 
 .icon-lg {
@@ -148,6 +191,18 @@ body ::selection {
 
 .page-content.hidden {
   display: none;
+}
+
+/* per-folder content blocks — only the active one is shown */
+.view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.view.active {
+  display: flex;
 }
 
 @keyframes fold-away {
@@ -213,7 +268,7 @@ body ::selection {
   animation: folder-pop 0.5s cubic-bezier(.2, 1, .4, 1) forwards;
 }
 
-/* grey-bordered file boxes (readme.txt / help.txt) */
+/* grey-bordered file boxes (readme.txt / help.txt / etc.) */
 .file-box {
   width: min(780px, 94vw);
   border: 1px solid var(--border-grey);
@@ -332,6 +387,10 @@ p.subtitle {
 .line {
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.line-error {
+  color: #ff6b6b;
 }
 
 .ls-current {

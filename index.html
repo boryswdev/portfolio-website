@@ -79,24 +79,106 @@
       </details>
     </div>
 
-    <!-- ============ aboutme tab content — EDIT HERE ============ -->
+    <!-- ============ aboutme tab content — ============ -->
     <div class="view" data-view="aboutme">
       <fieldset class="file-box">
         <legend><span class="icon">📄</span> aboutme.txt</legend>
         <header>
-          <h1>about me</h1>
+          <h1>about me:</h1>
         </header>
+      </fieldset>
+      <fieldset class="file-box">
+        <legend><span class="icon">📄</span> whoami?.txt</legend>
+        <header>
+          <h1>whoami?</h1>
+        </header>
+        <p>i'm a passionate cybersecurity student mostly interested in ethical hacking and penetration testing.
+          i like software development too, especially web development. i like video games and making
+          mods for them (like terraria and minecraft). i am looking for my first internship
+          in IT in the next year or so then getting a full time cybersecurity job after that. i also like making games.
+        </p>
       </fieldset>
     </div>
 
-    <!-- ============ projects tab content — EDIT HERE ============ -->
+    <!-- ============ projects tab content  ============ -->
     <div class="view" data-view="projects">
-      <fieldset class="file-box">
-        <legend><span class="icon">📄</span> projects.txt</legend>
-        <header>
-          <h1>projects</h1>
-        </header>
-      </fieldset>
+      <div class="projects-layout">
+        <div class="drawing-column">
+          <h2 class="drawing-prompt">feel free to draw if you're bored of reading</h2>
+          <section class="paint-notepad" aria-label="wafflepaint.exe">
+            <div class="notepad-titlebar">
+              <span class="notepad-title">wafflepaint</span>
+              <span class="notepad-indicator" aria-hidden="true"></span>
+            </div>
+            <div class="notepad-tools" role="toolbar" aria-label="Drawing tools">
+              <div class="notepad-palette" aria-label="Brush color">
+                <button class="color-swatch selected" type="button" data-color="#202020" aria-label="Black" aria-pressed="true" title="Black"></button>
+                <button class="color-swatch" type="button" data-color="#e34b4b" aria-label="Red" aria-pressed="false" title="Red"></button>
+                <button class="color-swatch" type="button" data-color="#e6b82e" aria-label="Yellow" aria-pressed="false" title="Yellow"></button>
+                <button class="color-swatch" type="button" data-color="#3978d4" aria-label="Blue" aria-pressed="false" title="Blue"></button>
+                <button class="color-swatch" type="button" data-color="#389b65" aria-label="Green" aria-pressed="false" title="Green"></button>
+                <button class="color-swatch" type="button" data-color="#ed7d31" aria-label="Orange" aria-pressed="false" title="Orange"></button>
+                <button class="color-swatch" type="button" data-color="#8e63b7" aria-label="Purple" aria-pressed="false" title="Purple"></button>
+                <button class="color-swatch" type="button" data-color="#e878a8" aria-label="Pink" aria-pressed="false" title="Pink"></button>
+                <button class="color-swatch" type="button" data-color="#20a5a0" aria-label="Teal" aria-pressed="false" title="Teal"></button>
+                <button class="color-swatch" type="button" data-color="#ffffff" aria-label="White" aria-pressed="false" title="White"></button>
+              </div>
+              <label class="brush-control" for="brush-size">
+                <span>size</span>
+                <input id="brush-size" type="range" min="1" max="12" value="3" aria-label="Brush size">
+              </label>
+              <button class="notepad-action tool-choice" id="brush-tool" type="button" aria-label="Brush" aria-pressed="true" title="Brush">🖌️</button>
+              <button class="notepad-action tool-choice" id="paint-tool" type="button" aria-label="Paint fill" aria-pressed="false" title="Paint fill">🎨</button>
+              <button class="notepad-action tool-choice eraser-action" id="eraser-tool" type="button" aria-label="Rubber eraser" aria-pressed="false" title="Rubber eraser">
+                <span class="rubber-icon" aria-hidden="true"></span>
+              </button>
+              <button class="notepad-action icon-action" id="undo-drawing" type="button" aria-label="Undo" title="Undo" disabled>↶</button>
+              <button class="notepad-action" id="clear-drawing" type="button" title="Clear canvas">clear</button>
+            </div>
+            <div class="canvas-wrap">
+              <canvas class="notepad-canvas" id="notepad-canvas" width="600" height="360" aria-label="Drawing canvas. Use the mouse or touch to draw."></canvas>
+              <span class="tool-cursor brush-cursor" id="brush-cursor" aria-hidden="true">🖌️</span>
+              <span class="tool-cursor paint-cursor" id="paint-cursor" aria-hidden="true">🎨</span>
+              <span class="eraser-cursor" id="eraser-cursor" aria-hidden="true"></span>
+            </div>
+          </section>
+          <p class="game-intro">if  you dont like drawing:</p>
+          <section class="mini-game" id="snake-game" aria-label="Snake game">
+            <div class="game-titlebar snake-titlebar"><span>snake.exe</span><span class="game-status-light"></span></div>
+            <div class="game-hud">
+              <span>score <strong id="snake-score">0</strong></span>
+              <span>best <strong id="snake-best">0</strong></span>
+              <span id="snake-status">ready</span>
+            </div>
+            <div class="game-stage" id="snake-stage" aria-label="Snake game area. Focus the game canvas to play with WASD or the arrow keys.">
+              <span class="game-phrase" id="snake-phrase" aria-live="polite"></span>
+            </div>
+            <div class="game-controls">
+              <button class="game-button" id="snake-start" type="button">start</button>
+              <button class="game-button secondary" id="snake-pause" type="button" aria-label="Pause Snake" title="Pause" disabled>pause</button>
+              <button class="game-button secondary" id="snake-restart" type="button">restart</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="projects-info">
+          <fieldset class="file-box">
+            <legend><span class="icon">📄</span> projects.txt</legend>
+            <header>
+              <h1 class="projects-heading">projects:</h1>
+            </header>
+          </fieldset>
+          <fieldset class="file-box">
+            <legend><span class="icon">💾</span> myprojects.txt</legend>
+            <header>
+              <h1 class="projects-heading">recent projects:</h1>
+              <p>i have recently worked on a few projects, the most recent was a linux security monitor which i am still working on, (today being 01/09/2026)
+                most of these projects are in python and cybersecurity related. i also really love making games and hope to make a proper godot one in the next year.
+              </p>
+            </header>
+          </fieldset>
+        </div>
+      </div>
     </div>
 
     <!-- ============ contactme tab content — EDIT HERE ============ -->
@@ -107,10 +189,25 @@
           <h1>contact me</h1>
         </header>
       </fieldset>
+      <fieldset class="file-box">
+        <legend><span class="icon">📄</span>github.txt</legend>
+        <header>
+          <h1>github: <a class="contact-link github-link" href="https://github.com/boryswdev" target="_blank" rel="noopener noreferrer">github.com/boryswdev</a></h1>
+        </header>
+      </fieldset>
+      <fieldset class="file-box">
+        <legend><span class="icon">📄</span>email.txt</legend>
+        <header>
+          <h1>email: <a class="contact-link email-link" href="mailto:boryswdev@gmail.com">boryswdev@gmail.com</a> <span class="email-note">(will soon be my own domain but i'm broke)</span></h1>
+        </header>
+      </fieldset>
     </div>
+
 
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+  <script src="games.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

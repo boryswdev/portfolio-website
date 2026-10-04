@@ -88,6 +88,8 @@ function switchFolder(folder) {
     view.classList.toggle('active', view.dataset.view === folder);
   });
 
+  if (folder === 'projects') window.initializeMiniGames?.();
+
   renderTabs();
 }
 
@@ -161,6 +163,7 @@ function submitCommand() {
 
 window.addEventListener('keydown', (e) => {
   if (!typedEl || !terminalBody) return;
+  if (e.target instanceof Element && e.target.closest('.paint-notepad, .mini-game')) return;
 
   if (e.key === 'Backspace') {
     buffer = buffer.slice(0, -1);
@@ -181,6 +184,7 @@ window.addEventListener('keydown', (e) => {
     buffer = cmdHistory[historyIndex] || '';
   } else if (e.key.length === 1) {
     buffer += e.key;
+    e.preventDefault();
   } else {
     return;
   }
@@ -189,6 +193,183 @@ window.addEventListener('keydown', (e) => {
 });
 
 renderTabs();
+
+/* projects drawing notepad */
+const drawingCanvas = document.getElementById('notepad-canvas');
+const drawingContext = drawingCanvas?.getContext('2d');
+const brushSizeInput = document.getElementById('brush-size');
+const brushTool = document.getElementById('brush-tool');
+const paintTool = document.getElementById('paint-tool');
+const eraserTool = document.getElementById('eraser-tool');
+const brushCursor = document.getElementById('brush-cursor');
+const paintCursor = document.getElementById('paint-cursor');
+const eraserCursor = document.getElementById('eraser-cursor');
+const undoDrawingButton = document.getElementById('undo-drawing');
+const clearDrawingButton = document.getElementById('clear-drawing');
+
+if (drawingCanvas && drawingContext && brushSizeInput && brushTool && paintTool && eraserTool && brushCursor && paintCursor && eraserCursor && undoDrawingButton && clearDrawingButton) {
+  let drawing = false;
+  let brushColor = '#202020';
+  let activeTool = 'brush';
+  const undoStack = [];
+
+  const canvasPoint = (event) => {
+    const bounds = drawingCanvas.getBoundingClientRect();
+    return {
+      x: (event.clientX - bounds.left) * drawingCanvas.width / bounds.width,
+      y: (event.clientY - bounds.top) * drawingCanvas.height / bounds.height
+    };
+  };
+
+  const setBrush = () => {
+    const bounds = drawingCanvas.getBoundingClientRect();
+    drawingContext.strokeStyle = activeTool === 'eraser' ? '#ffffff' : brushColor;
+    drawingContext.lineWidth = Number(brushSizeInput.value) * drawingCanvas.width / bounds.width;
+    drawingContext.lineCap = 'round';
+    drawingContext.lineJoin = 'round';
+  };
+
+  const updateToolCursor = (event) => {
+    const bounds = drawingCanvas.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+    const size = Number(brushSizeInput.value);
+    [brushCursor, paintCursor, eraserCursor].forEach((cursor) => {
+      cursor.style.left = `${x}px`;
+      cursor.style.top = `${y}px`;
+    });
+    eraserCursor.style.width = `${size}px`;
+    eraserCursor.style.height = `${size}px`;
+    brushCursor.classList.toggle('visible', activeTool === 'brush');
+    paintCursor.classList.toggle('visible', activeTool === 'paint');
+    eraserCursor.classList.toggle('visible', activeTool === 'eraser');
+  };
+
+  const hideToolCursors = () => {
+    [brushCursor, paintCursor, eraserCursor].forEach((cursor) => cursor.classList.remove('visible'));
+  };
+
+  drawingCanvas.addEventListener('pointerenter', updateToolCursor);
+  drawingCanvas.addEventListener('pointermove', updateToolCursor);
+  drawingCanvas.addEventListener('pointerleave', hideToolCursors);
+
+  const saveUndoState = () => {
+    undoStack.push(drawingContext.getImageData(0, 0, drawingCanvas.width, drawingCanvas.height));
+    if (undoStack.length > 20) undoStack.shift();
+    undoDrawingButton.disabled = false;
+  };
+
+  const fillCanvasAt = (event) => {
+    const point = canvasPoint(event);
+    const width = drawingCanvas.width;
+    const height = drawingCanvas.height;
+    const image = drawingContext.getImageData(0, 0, width, height);
+    const pixels = image.data;
+    const startX = Math.max(0, Math.min(width - 1, Math.floor(point.x)));
+    const startY = Math.max(0, Math.min(height - 1, Math.floor(point.y)));
+    const startOffset = (startY * width + startX) * 4;
+    const target = Array.from(pixels.slice(startOffset, startOffset + 4));
+    const fill = [
+      Number.parseInt(brushColor.slice(1, 3), 16),
+      Number.parseInt(brushColor.slice(3, 5), 16),
+      Number.parseInt(brushColor.slice(5, 7), 16),
+      255
+    ];
+
+    if (target.every((channel, index) => channel === fill[index])) return;
+
+    const pending = new Uint32Array(width * height);
+    let next = 0;
+    let count = 0;
+    const addPixel = (x, y) => {
+      const pixel = y * width + x;
+      const offset = pixel * 4;
+      if (pixels[offset] !== target[0] || pixels[offset + 1] !== target[1] || pixels[offset + 2] !== target[2] || pixels[offset + 3] !== target[3]) return;
+      pixels.set(fill, offset);
+      pending[count++] = pixel;
+    };
+
+    saveUndoState();
+    addPixel(startX, startY);
+    while (next < count) {
+      const pixel = pending[next++];
+      const x = pixel % width;
+      const y = Math.floor(pixel / width);
+      if (x > 0) addPixel(x - 1, y);
+      if (x < width - 1) addPixel(x + 1, y);
+      if (y > 0) addPixel(x, y - 1);
+      if (y < height - 1) addPixel(x, y + 1);
+    }
+    drawingContext.putImageData(image, 0, 0);
+  };
+
+  const setActiveTool = (tool) => {
+    activeTool = tool;
+    [[brushTool, 'brush'], [paintTool, 'paint'], [eraserTool, 'eraser']].forEach(([button, name]) => {
+      button.setAttribute('aria-pressed', String(activeTool === name));
+    });
+  };
+
+  drawingCanvas.addEventListener('pointerdown', (event) => {
+    if (activeTool === 'paint') {
+      fillCanvasAt(event);
+      return;
+    }
+    drawing = true;
+    drawingCanvas.setPointerCapture(event.pointerId);
+    saveUndoState();
+    setBrush();
+    const point = canvasPoint(event);
+    drawingContext.beginPath();
+    drawingContext.moveTo(point.x, point.y);
+    drawingContext.lineTo(point.x + 0.01, point.y + 0.01);
+    drawingContext.stroke();
+  });
+
+  drawingCanvas.addEventListener('pointermove', (event) => {
+    if (!drawing) return;
+    const point = canvasPoint(event);
+    drawingContext.lineTo(point.x, point.y);
+    drawingContext.stroke();
+  });
+
+  const stopDrawing = () => {
+    drawing = false;
+    drawingContext.closePath();
+  };
+
+  drawingCanvas.addEventListener('pointerup', stopDrawing);
+  drawingCanvas.addEventListener('pointercancel', stopDrawing);
+
+  document.querySelectorAll('.color-swatch').forEach((swatch) => {
+    swatch.addEventListener('click', () => {
+      brushColor = swatch.dataset.color;
+      document.querySelectorAll('.color-swatch').forEach((item) => {
+        const selected = item === swatch;
+        item.classList.toggle('selected', selected);
+        item.setAttribute('aria-pressed', String(selected));
+      });
+    });
+  });
+
+  brushTool.addEventListener('click', () => setActiveTool('brush'));
+  paintTool.addEventListener('click', () => setActiveTool('paint'));
+  eraserTool.addEventListener('click', () => setActiveTool('eraser'));
+
+  undoDrawingButton.addEventListener('click', () => {
+    const previousDrawing = undoStack.pop();
+    if (!previousDrawing) return;
+    drawingContext.putImageData(previousDrawing, 0, 0);
+    undoDrawingButton.disabled = undoStack.length === 0;
+  });
+
+  clearDrawingButton.addEventListener('click', () => {
+    undoStack.push(drawingContext.getImageData(0, 0, drawingCanvas.width, drawingCanvas.height));
+    if (undoStack.length > 20) undoStack.shift();
+    drawingContext.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+    undoDrawingButton.disabled = false;
+  });
+}
 
 /* heading letters fall into place on load */
 function buildFallingHeading() {

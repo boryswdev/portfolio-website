@@ -577,6 +577,24 @@ body ::selection {
   gap: 10px;
 }
 
+.project-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.project-card {
+  width: 100%;
+  min-height: 100px;
+  margin: 0;
+  padding: 18px;
+}
+
+.project-card header {
+  min-height: 42px;
+}
+
 .projects-heading {
   font-size: 1.6rem;
 }
@@ -585,7 +603,6 @@ body ::selection {
   .projects-layout {
     grid-template-columns: minmax(0, 1fr);
   }
-
 }
 
 @keyframes fold-away {

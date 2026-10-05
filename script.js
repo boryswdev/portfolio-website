@@ -88,8 +88,6 @@ function switchFolder(folder) {
     view.classList.toggle('active', view.dataset.view === folder);
   });
 
-  if (folder === 'projects') window.initializeMiniGames?.();
-
   renderTabs();
 }
 

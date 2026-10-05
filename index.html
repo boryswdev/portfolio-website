@@ -142,23 +142,6 @@
               <span class="eraser-cursor" id="eraser-cursor" aria-hidden="true"></span>
             </div>
           </section>
-          <p class="game-intro">if  you dont like drawing:</p>
-          <section class="mini-game" id="snake-game" aria-label="Snake game">
-            <div class="game-titlebar snake-titlebar"><span>snake.exe</span><span class="game-status-light"></span></div>
-            <div class="game-hud">
-              <span>score <strong id="snake-score">0</strong></span>
-              <span>best <strong id="snake-best">0</strong></span>
-              <span id="snake-status">ready</span>
-            </div>
-            <div class="game-stage" id="snake-stage" aria-label="Snake game area. Focus the game canvas to play with WASD or the arrow keys.">
-              <span class="game-phrase" id="snake-phrase" aria-live="polite"></span>
-            </div>
-            <div class="game-controls">
-              <button class="game-button" id="snake-start" type="button">start</button>
-              <button class="game-button secondary" id="snake-pause" type="button" aria-label="Pause Snake" title="Pause" disabled>pause</button>
-              <button class="game-button secondary" id="snake-restart" type="button">restart</button>
-            </div>
-          </section>
         </div>
 
         <div class="projects-info">
@@ -177,6 +160,25 @@
               </p>
             </header>
           </fieldset>
+
+          <div class="project-cards">
+            <fieldset class="file-box project-card">
+              <legend><span class="icon">🎮</span> project01.txt</legend>
+              <header>
+                <h1 class="projects-heading">portscanner</h1>
+                <p>a python-based tool for scanning open ports on a target machine</p>
+                <p><a class="contact-link github-link" href="https://github.com/boryswdev/waffleport" target="_blank" rel="noopener noreferrer">github.com/boryswdev/waffleport</a></p>
+              </header>
+            </fieldset>
+            <fieldset class="file-box project-card">
+              <legend><span class="icon">🎮</span> project02.txt</legend>
+              <header>
+                <h1 class="projects-heading">linux security monitor</h1>
+                <p>a python-based tool for monitoring and analyzing linux system security</p>
+                <p><a class="contact-link github-link" href="https://github.com/boryswdev/waffleboard" target="_blank" rel="noopener noreferrer">github.com/boryswdev/waffleboard</a></p>
+              </header>
+            </fieldset>
+          </div>
         </div>
       </div>
     </div>
@@ -206,8 +208,6 @@
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
-  <script src="games.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
